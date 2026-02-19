@@ -120,6 +120,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Prevent scrolling during preloader */
+body.loading {
+  overflow: hidden;
+  height: 100vh;
+  position: fixed;
+  width: 100%;
+}
+
 /* Image optimization - prevent blurriness */
 img {
   image-rendering: -webkit-optimize-contrast;
@@ -506,6 +514,7 @@ footer {
   justify-content: center;
   position: relative;
   z-index: 2;
+  padding: 0 20px;
 }
 
 /* Text Glow Effect */
@@ -513,15 +522,31 @@ footer {
   text-shadow:
     0 0 40px rgba(255, 255, 255, 0.1),
     0 0 80px rgba(255, 255, 255, 0.05);
+  font-size: clamp(3rem, 15vw, 9rem);
 }
 
 .loading-bar-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   width: 400px;
-  max-width: 90vw;
+  max-width: 85vw;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  #preloader-text {
+    margin-bottom: 2rem;
+  }
+
+  .loading-bar-wrapper {
+    max-width: 80vw;
+  }
+
+  .loading-percentage {
+    font-size: 12px;
+  }
 }
 
 .loading-bar-bg {
@@ -683,6 +708,15 @@ footer {
   box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2);
 }
 
+/* Mobile responsive for buttons */
+@media (max-width: 768px) {
+  .btn-primary,
+  .btn-secondary {
+    padding: 10px 24px;
+    font-size: 12px;
+  }
+}
+
 /* ===========================================
    GRADIENT TEXT
    =========================================== */
@@ -752,6 +786,32 @@ footer {
   background: rgba(230, 57, 70, 0.08);
   border: 1px solid rgba(230, 57, 70, 0.24);
   box-shadow: none;
+}
+
+/* Mobile responsive for filter bar */
+@media (max-width: 768px) {
+  .filter-bar {
+    gap: 8px;
+    padding: 16px 20px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-bar {
+    gap: 6px;
+    padding: 12px 16px;
+  }
+
+  .filter-btn {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
 }
 
 /* ===========================================
@@ -1143,6 +1203,40 @@ footer {
   width: 100%;
 }
 
+/* Mobile responsive for navigation */
+@media (max-width: 768px) {
+  #navbar {
+    padding: 16px 20px !important;
+  }
+
+  #logo {
+    font-size: 1.5rem !important;
+  }
+
+  .nav-link {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  #navbar {
+    padding: 12px 16px !important;
+  }
+
+  #navbar .flex.gap-8 {
+    gap: 12px !important;
+  }
+
+  .nav-link {
+    display: none;
+  }
+
+  .btn-primary {
+    padding: 8px 16px;
+    font-size: 10px;
+  }
+}
+
 /* ===========================================
    ANIMATIONS
    =========================================== */
@@ -1378,5 +1472,126 @@ input:focus {
   footer,
   .filter-bar {
     display: none !important;
+  }
+}
+
+/* ===========================================
+   MOBILE RESPONSIVE IMPROVEMENTS
+   =========================================== */
+@media (max-width: 768px) {
+  /* Reduce section padding on mobile */
+  section {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+  }
+
+  /* Hero section adjustments */
+  #hero {
+    padding-top: 6rem !important;
+    padding-bottom: 3rem !important;
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
+
+  /* Smaller hero title on mobile */
+  .hero-title {
+    font-size: 2.5rem !important;
+    line-height: 1.1;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem !important;
+  }
+
+  /* Portfolio showcase */
+  #portfolio-showcase {
+    padding: 3rem 1rem !important;
+  }
+
+  #portfolio-showcase h2 {
+    font-size: 2.5rem !important;
+    margin-bottom: 2rem !important;
+  }
+
+  /* Gallery sections */
+  .gallery-section {
+    margin-bottom: 3rem !important;
+  }
+
+  .gallery-section h2 {
+    font-size: 2rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  /* Work section */
+  #work {
+    padding: 3rem 1rem !important;
+  }
+
+  /* Adjust grid gaps on mobile */
+  .grid {
+    gap: 1rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Extra small screens */
+  .hero-title {
+    font-size: 2rem !important;
+  }
+
+  #portfolio-showcase h2 {
+    font-size: 2rem !important;
+  }
+
+  .gallery-section h2 {
+    font-size: 1.75rem !important;
+  }
+
+  /* Smaller button text */
+  .btn-primary,
+  .btn-secondary {
+    padding: 8px 16px;
+    font-size: 11px;
+  }
+
+  /* Reduce morphing shapes on mobile for better performance */
+  .morph-shape {
+    opacity: 0.08;
+    filter: blur(60px);
+  }
+}
+
+/* Optimize animations for mobile */
+@media (max-width: 768px) {
+  /* Reduce animation complexity on mobile */
+  .morph-item:hover,
+  .hover-scale:hover {
+    transform: scale(1.02);
+  }
+
+  /* Faster transitions on mobile */
+  .gallery-item img,
+  .photo-grid img,
+  .zoom-match-item img {
+    transition-duration: 0.3s !important;
+  }
+}
+
+/* Improve touch targets on mobile */
+@media (hover: none) and (pointer: coarse) {
+  .filter-btn,
+  .btn-primary,
+  .btn-secondary,
+  .nav-link {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Disable hover effects on touch devices */
+  .custom-cursor {
+    display: none;
   }
 }

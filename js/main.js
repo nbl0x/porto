@@ -24,6 +24,9 @@ window.addEventListener("load", () => {
   const hero = document.getElementById("hero");
   const logo = document.getElementById("logo");
 
+  // Prevent scrolling during preloader
+  document.body.classList.add("loading");
+
   // Counter object for percentage
   const counter = { value: 0 };
 
@@ -31,6 +34,8 @@ window.addEventListener("load", () => {
   const tl = gsap.timeline({
     onComplete: () => {
       preloader.style.display = "none";
+      // Re-enable scrolling after preloader
+      document.body.classList.remove("loading");
       initScrollAnimations();
 
       // Initialize sequential image loader after preloader
@@ -41,20 +46,20 @@ window.addEventListener("load", () => {
   // Step 1: Show loading bar immediately
   tl.to(loadingBarContainer, {
     opacity: 1,
-    duration: 0.4,
+    duration: 0.3,
     ease: "power2.out",
   })
-    // Step 2: Animate loading bar fill, counter, and brighten letters progressively
+    // Step 2: Animate loading bar fill, counter, and brighten letters progressively (faster)
     .to(loadingBar, {
       width: "100%",
-      duration: 2.5,
+      duration: 1.0,
       ease: "power2.inOut",
     })
     .to(
       counter,
       {
         value: 100,
-        duration: 2.5,
+        duration: 1.0,
         ease: "power2.inOut",
         onUpdate: function () {
           loadingPercentage.textContent = Math.floor(counter.value) + "%";
@@ -75,11 +80,11 @@ window.addEventListener("load", () => {
       },
       "<",
     )
-    // Step 4: Hold for a moment when complete
+    // Step 4: Hold for a moment when complete (shorter)
     .to(
       {},
       {
-        duration: 0.3,
+        duration: 0.15,
       },
     )
     // Step 5: Fade out loading bar
