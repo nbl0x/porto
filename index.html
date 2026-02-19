@@ -1,0 +1,799 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Willy | Digital Artist</title>
+    <meta
+      name="description"
+      content="Videographer, Editor & 3D Artist based in Bandung. Creating cinematic visual experiences."
+    />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "light-bg": "#F9FAFB",
+              primary: "#111827",
+              secondary: "#6B7280",
+              "red-accent": "#DC2626",
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="css/style.css" as="style" />
+    <link rel="preload" href="js/main.js" as="script" />
+    <link
+      rel="preload"
+      href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+      as="script"
+    />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body class="bg-light-bg text-primary font-['Montserrat'] overflow-x-hidden">
+    <!-- BACKGROUND LAYERS -->
+    <div class="bg-grid"></div>
+    <div class="bg-noise"></div>
+    <div class="bg-topology"></div>
+
+    <!-- PRELOADER -->
+    <div
+      id="preloader"
+      class="fixed inset-0 z-50 bg-white flex items-center justify-center flex-col"
+    >
+      <div class="preloader-content">
+        <h1
+          id="preloader-text"
+          class="text-8xl md:text-9xl font-extrabold tracking-tight text-primary mb-12 relative z-10"
+        >
+          <span class="letter" data-letter="0" style="opacity: 0.2">W</span
+          ><span class="letter" data-letter="1" style="opacity: 0.2">I</span
+          ><span class="letter" data-letter="2" style="opacity: 0.2">L</span
+          ><span class="letter" data-letter="3" style="opacity: 0.2">L</span
+          ><span class="letter" data-letter="4" style="opacity: 0.2">Y</span>
+        </h1>
+        <div
+          id="loading-bar-container"
+          class="loading-bar-wrapper opacity-0 relative z-10"
+        >
+          <div class="loading-bar-bg">
+            <div id="loading-bar" class="loading-bar-fill"></div>
+          </div>
+          <div id="loading-percentage" class="loading-percentage">0%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <nav id="navbar" class="fixed top-0 left-0 w-full z-40 px-8 py-6 opacity-0">
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <a href="#" id="logo" class="text-3xl font-extrabold tracking-tight"
+          >WILLY</a
+        >
+        <div class="flex items-center gap-8">
+          <a
+            href="#work"
+            class="nav-link text-sm uppercase tracking-wider hover:text-red-accent transition-colors"
+            >Work</a
+          >
+          <a
+            href="#about"
+            class="nav-link text-sm uppercase tracking-wider hover:text-red-accent transition-colors"
+            >About</a
+          >
+          <a href="CV WILLY FAZRIL RAMADHAN.pdf" download class="btn-primary"
+            >Download Resume</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section
+      id="hero"
+      class="min-h-screen flex items-center justify-center px-8 pt-32 pb-20 opacity-0 relative overflow-hidden"
+    >
+      <!-- Morphing Shapes Background -->
+      <div class="morph-shape morph-shape-1"></div>
+      <div class="morph-shape morph-shape-2"></div>
+      <div class="morph-shape morph-shape-3"></div>
+
+      <!-- Large Hero Image with Zoom -->
+      <div class="hero-image-container">
+        <img
+          src="assets/Foto Porto/foto (1).JPG"
+          alt="Hero"
+          class="hero-large-image"
+          loading="eager"
+        />
+      </div>
+
+      <div class="max-w-6xl mx-auto text-center relative z-10">
+        <div class="mb-6 overflow-hidden">
+          <h1
+            class="hero-title text-6xl md:text-8xl lg:text-9xl font-extrabold tracking-tight mb-4 leading-none text-white drop-shadow-2xl"
+          >
+            Visual Storyteller<br /><span class="gradient-text"
+              >& Digital Artist</span
+            >
+          </h1>
+        </div>
+        <div class="overflow-hidden">
+          <p
+            class="hero-subtitle text-lg md:text-xl text-white drop-shadow-lg mb-8"
+          >
+            Based in Bandung | Student at Universitas Teknologi Bandung
+          </p>
+        </div>
+        <div class="flex items-center justify-center gap-4 flex-wrap">
+          <a href="#work" class="btn-primary">Explore My Work</a>
+          <a href="mailto:Willyfazril14@gmail.com" class="btn-secondary"
+            >Get In Touch</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- PORTFOLIO SHOWCASE WITH ZOOM MATCH CUT -->
+    <section
+      id="portfolio-showcase"
+      class="py-32 px-8 bg-black relative overflow-hidden"
+    >
+      <div class="max-w-7xl mx-auto">
+        <h2
+          class="text-6xl md:text-8xl font-extrabold text-white mb-20 text-center"
+        >
+          Featured Work
+        </h2>
+
+        <!-- Zoom Match Cut Gallery -->
+        <div class="zoom-match-grid">
+          <div class="zoom-match-item" data-index="0">
+            <img
+              src="assets/Foto Porto/foto (5).JPG"
+              alt="Portfolio 1"
+              loading="lazy"
+            />
+            <div class="zoom-overlay">
+              <h3 class="text-3xl font-bold text-white">Creative Vision</h3>
+            </div>
+          </div>
+          <div class="zoom-match-item" data-index="1">
+            <img
+              src="assets/Desain/banner ansatsu-01.png"
+              alt="Portfolio 2"
+              loading="lazy"
+            />
+            <div class="zoom-overlay">
+              <h3 class="text-3xl font-bold text-white">Design Excellence</h3>
+            </div>
+          </div>
+          <div class="zoom-match-item" data-index="2">
+            <img
+              src="assets/Foto Porto/foto (8).JPG"
+              alt="Portfolio 3"
+              loading="lazy"
+            />
+            <div class="zoom-overlay">
+              <h3 class="text-3xl font-bold text-white">Professional Work</h3>
+            </div>
+          </div>
+          <div class="zoom-match-item" data-index="3">
+            <img
+              src="assets/Logo/logo (1).png"
+              alt="Portfolio 4"
+              loading="lazy"
+            />
+            <div class="zoom-overlay">
+              <h3 class="text-3xl font-bold text-white">Brand Identity</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GLOWING FILTER BAR -->
+    <section id="work" class="py-20 px-8">
+      <div class="max-w-7xl mx-auto">
+        <div class="filter-bar mb-16">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="video">Video</button>
+          <button class="filter-btn" data-filter="design">Design</button>
+          <button class="filter-btn" data-filter="3d">3D</button>
+        </div>
+
+        <!-- VIDEO GALLERY -->
+        <div id="video-gallery" class="gallery-section mb-32">
+          <h2 class="text-5xl font-extrabold mb-12 tracking-tight">
+            Video Work
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="gallery-item video-item group" data-category="video">
+              <div
+                class="relative overflow-hidden rounded-lg aspect-video bg-gray-200"
+              >
+                <video
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                >
+                  <source src="assets/Short Video/3d.mp4" type="video/mp4" />
+                </video>
+                <div
+                  class="absolute inset-0 media-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+                >
+                  <div class="caption-panel text-center">
+                    <h3 class="text-xl font-bold mb-2">3D Animation</h3>
+                    <p class="text-sm">3D Motion Graphics</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="gallery-item video-item group" data-category="video">
+              <div
+                class="relative overflow-hidden rounded-lg aspect-video bg-gray-200"
+              >
+                <video
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                >
+                  <source
+                    src="assets/Short Video/bumper.mp4"
+                    type="video/mp4"
+                  />
+                </video>
+                <div
+                  class="absolute inset-0 media-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+                >
+                  <div class="caption-panel text-center">
+                    <h3 class="text-xl font-bold mb-2">Bumper Video</h3>
+                    <p class="text-sm">Brand Bumper</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="gallery-item video-item group" data-category="video">
+              <div
+                class="relative overflow-hidden rounded-lg aspect-video bg-gray-200"
+              >
+                <video
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                >
+                  <source src="assets/Short Video/klip.mp4" type="video/mp4" />
+                </video>
+                <div
+                  class="absolute inset-0 media-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+                >
+                  <div class="caption-panel text-center">
+                    <h3 class="text-xl font-bold mb-2">Video Klip</h3>
+                    <p class="text-sm">Music Video</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="gallery-item video-item group" data-category="video">
+              <div
+                class="relative overflow-hidden rounded-lg aspect-video bg-gray-200"
+              >
+                <video
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                >
+                  <source
+                    src="assets/Short Video/opening.mp4"
+                    type="video/mp4"
+                  />
+                </video>
+                <div
+                  class="absolute inset-0 media-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+                >
+                  <div class="caption-panel text-center">
+                    <h3 class="text-xl font-bold mb-2">Opening</h3>
+                    <p class="text-sm">Intro Animation</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="gallery-item video-item group" data-category="video">
+              <div
+                class="relative overflow-hidden rounded-lg aspect-video bg-gray-200"
+              >
+                <video
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                >
+                  <source
+                    src="assets/Short Video/openinng-2.mp4"
+                    type="video/mp4"
+                  />
+                </video>
+                <div
+                  class="absolute inset-0 media-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+                >
+                  <div class="caption-panel text-center">
+                    <h3 class="text-xl font-bold mb-2">Opening 2</h3>
+                    <p class="text-sm">Intro Sequence</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="gallery-item video-item group" data-category="video">
+              <div
+                class="relative overflow-hidden rounded-lg aspect-video bg-gray-200"
+              >
+                <video
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                >
+                  <source
+                    src="assets/Short Video/overlay.mp4"
+                    type="video/mp4"
+                  />
+                </video>
+                <div
+                  class="absolute inset-0 media-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+                >
+                  <div class="caption-panel text-center">
+                    <h3 class="text-xl font-bold mb-2">Overlay</h3>
+                    <p class="text-sm">Motion Overlay</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="gallery-item video-item group" data-category="video">
+              <div
+                class="relative overflow-hidden rounded-lg aspect-video bg-gray-200"
+              >
+                <video
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                >
+                  <source
+                    src="assets/Short Video/polimorph.mp4"
+                    type="video/mp4"
+                  />
+                </video>
+                <div
+                  class="absolute inset-0 media-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+                >
+                  <div class="caption-panel text-center">
+                    <h3 class="text-xl font-bold mb-2">Polimorph</h3>
+                    <p class="text-sm">Shape Animation</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="gallery-item video-item group" data-category="video">
+              <div
+                class="relative overflow-hidden rounded-lg aspect-video bg-gray-200"
+              >
+                <video
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                >
+                  <source
+                    src="assets/Short Video/short-movie.mp4"
+                    type="video/mp4"
+                  />
+                </video>
+                <div
+                  class="absolute inset-0 media-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+                >
+                  <div class="caption-panel text-center">
+                    <h3 class="text-xl font-bold mb-2">Short Movie</h3>
+                    <p class="text-sm">Cinematic Film</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="gallery-item video-item group" data-category="video">
+              <div
+                class="relative overflow-hidden rounded-lg aspect-video bg-gray-200"
+              >
+                <video
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                >
+                  <source
+                    src="assets/Short Video/wedding.mp4"
+                    type="video/mp4"
+                  />
+                </video>
+                <div
+                  class="absolute inset-0 media-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+                >
+                  <div class="caption-panel text-center">
+                    <h3 class="text-xl font-bold mb-2">Wedding</h3>
+                    <p class="text-sm">Wedding Film</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DESIGN GALLERY -->
+        <div id="design-gallery" class="gallery-section mb-32">
+          <h2 class="text-5xl font-extrabold mb-12 tracking-tight">
+            Design Work
+          </h2>
+          <div class="masonry-grid">
+            <div
+              class="gallery-item design-item morph-item"
+              data-category="design"
+            >
+              <img
+                src="assets/Desain/banner ansatsu-01.png"
+                alt="Banner Design"
+                class="rounded-lg hover-scale"
+              />
+            </div>
+            <div
+              class="gallery-item design-item morph-item"
+              data-category="design"
+            >
+              <img
+                src="assets/Desain/banner-1.png"
+                alt="Banner Design 1"
+                class="rounded-lg hover-scale"
+              />
+            </div>
+            <div
+              class="gallery-item design-item morph-item"
+              data-category="design"
+            >
+              <img
+                src="assets/Desain/banner-2.png"
+                alt="Banner Design 2"
+                class="rounded-lg hover-scale"
+              />
+            </div>
+            <div
+              class="gallery-item design-item morph-item"
+              data-category="design"
+            >
+              <img
+                src="assets/Poster/poster (1).jpg"
+                alt="Poster Design"
+                class="rounded-lg hover-scale"
+              />
+            </div>
+            <div
+              class="gallery-item design-item morph-item"
+              data-category="design"
+            >
+              <img
+                src="assets/Poster/poster (2).png"
+                alt="Poster Design 2"
+                class="rounded-lg hover-scale"
+              />
+            </div>
+            <div
+              class="gallery-item design-item morph-item"
+              data-category="design"
+            >
+              <img
+                src="assets/Poster/poster (3).png"
+                alt="Poster Design 3"
+                class="rounded-lg hover-scale"
+              />
+            </div>
+            <div
+              class="gallery-item design-item morph-item"
+              data-category="design"
+            >
+              <img
+                src="assets/Poster/poster (4).png"
+                alt="Poster Design 4"
+                class="rounded-lg hover-scale"
+              />
+            </div>
+            <div
+              class="gallery-item design-item morph-item"
+              data-category="design"
+            >
+              <img
+                src="assets/Poster/poster (5).png"
+                alt="Poster Design 5"
+                class="rounded-lg hover-scale"
+              />
+            </div>
+            <div
+              class="gallery-item design-item morph-item"
+              data-category="design"
+            >
+              <img
+                src="assets/Logo/logo (1).png"
+                alt="Logo Design 1"
+                class="rounded-lg hover-scale"
+              />
+            </div>
+            <div
+              class="gallery-item design-item morph-item"
+              data-category="design"
+            >
+              <img
+                src="assets/Logo/logo (2).png"
+                alt="Logo Design 2"
+                class="rounded-lg hover-scale"
+              />
+            </div>
+            <div
+              class="gallery-item design-item morph-item"
+              data-category="design"
+            >
+              <img
+                src="assets/Logo/logo (3).png"
+                alt="Logo Design 3"
+                class="rounded-lg hover-scale"
+              />
+            </div>
+            <div
+              class="gallery-item design-item morph-item"
+              data-category="design"
+            >
+              <img
+                src="assets/Logo/logo (4).png"
+                alt="Logo Design 4"
+                class="rounded-lg hover-scale"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- PHOTO PORTFOLIO GALLERY -->
+        <div id="photo-gallery" class="gallery-section mb-32">
+          <h2 class="text-5xl font-extrabold mb-12 tracking-tight">
+            Photography
+          </h2>
+          <div class="photo-grid">
+            <div
+              class="gallery-item photo-item morph-item"
+              data-category="photo"
+            >
+              <img
+                src="assets/Foto Porto/foto (2).JPG"
+                alt="Photography 2"
+                class="rounded-lg hover-scale"
+              />
+            </div>
+            <div
+              class="gallery-item photo-item morph-item"
+              data-category="photo"
+            >
+              <img
+                src="assets/Foto Porto/foto (3).JPG"
+                alt="Photography 3"
+                class="rounded-lg hover-scale"
+              />
+            </div>
+            <div
+              class="gallery-item photo-item morph-item"
+              data-category="photo"
+            >
+              <img
+                src="assets/Foto Porto/foto (4).JPG"
+                alt="Photography 4"
+                class="rounded-lg hover-scale"
+              />
+            </div>
+            <div
+              class="gallery-item photo-item morph-item"
+              data-category="photo"
+            >
+              <img
+                src="assets/Foto Porto/foto (6).JPG"
+                alt="Photography 6"
+                class="rounded-lg hover-scale"
+              />
+            </div>
+            <div
+              class="gallery-item photo-item morph-item"
+              data-category="photo"
+            >
+              <img
+                src="assets/Foto Porto/foto (7).JPG"
+                alt="Photography 7"
+                class="rounded-lg hover-scale"
+              />
+            </div>
+            <div
+              class="gallery-item photo-item morph-item"
+              data-category="photo"
+            >
+              <img
+                src="assets/Foto Porto/foto (9).JPG"
+                alt="Photography 9"
+                class="rounded-lg hover-scale"
+              />
+            </div>
+            <div
+              class="gallery-item photo-item morph-item"
+              data-category="photo"
+            >
+              <img
+                src="assets/Foto Porto/foto (10).JPG"
+                alt="Photography 10"
+                class="rounded-lg hover-scale"
+              />
+            </div>
+            <div
+              class="gallery-item photo-item morph-item"
+              data-category="photo"
+            >
+              <img
+                src="assets/Foto Porto/foto (11).JPG"
+                alt="Photography 11"
+                class="rounded-lg hover-scale"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- 3D SLIDER -->
+        <div id="3d-section" class="gallery-section slider-section-wrapper">
+          <h2 class="text-5xl font-extrabold mb-16 tracking-tight text-center">
+            3D Artworks
+          </h2>
+          <div class="slider-container-enhanced">
+            <div class="slider-background-glow"></div>
+            <div class="slider-wrapper">
+              <div class="slider-track" id="slider-track">
+                <div class="slider-item" data-category="3d">
+                  <div class="slider-item-inner">
+                    <img src="assets/3d/katana-zoro.png" alt="Katana Zoro" />
+                  </div>
+                </div>
+                <div class="slider-item" data-category="3d">
+                  <div class="slider-item-inner">
+                    <img src="assets/3d/katana-zoro2.png" alt="Katana Zoro 2" />
+                  </div>
+                </div>
+                <div class="slider-item" data-category="3d">
+                  <div class="slider-item-inner">
+                    <img src="assets/3d/rumput.png" alt="Rumput" />
+                  </div>
+                </div>
+                <div class="slider-item" data-category="3d">
+                  <div class="slider-item-inner">
+                    <img src="assets/3d/stir.png" alt="Stir" />
+                  </div>
+                </div>
+                <div class="slider-item" data-category="3d">
+                  <div class="slider-item-inner">
+                    <img src="assets/3d/te37 .png" alt="TE37 Wheel" />
+                  </div>
+                </div>
+                <div class="slider-item" data-category="3d">
+                  <div class="slider-item-inner">
+                    <img src="assets/3d/topeng.png" alt="Topeng" />
+                  </div>
+                </div>
+                <div class="slider-item" data-category="3d">
+                  <div class="slider-item-inner">
+                    <img src="assets/3d/untitled.png" alt="3D Artwork" />
+                  </div>
+                </div>
+                <div class="slider-item" data-category="3d">
+                  <div class="slider-item-inner">
+                    <img src="assets/3d/upio.png" alt="Upio" />
+                  </div>
+                </div>
+                <div class="slider-item" data-category="3d">
+                  <div class="slider-item-inner">
+                    <img src="assets/3d/upo.png" alt="Upo" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="slider-controls">
+              <button id="slider-prev" class="slider-btn">←</button>
+              <div class="slider-dots" id="slider-dots"></div>
+              <button id="slider-next" class="slider-btn">→</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section
+      id="about"
+      class="py-32 px-8 bg-gradient-to-b from-light-bg to-white"
+    >
+      <div class="max-w-5xl mx-auto text-center">
+        <h2 class="text-5xl md:text-7xl font-extrabold mb-8 tracking-tight">
+          About Me
+        </h2>
+        <p class="text-xl text-secondary leading-relaxed mb-8">
+          I'm Willy Fazril Ramadhan, a passionate visual storyteller
+          specializing in videography, editing, and 3D artistry. Currently
+          studying at Universitas Teknologi Bandung, I blend technical precision
+          with creative vision to craft compelling visual narratives that
+          resonate with audiences.
+        </p>
+        <p class="text-lg text-gray-600 leading-relaxed mb-12">
+          From cinematic wedding films to automotive showcases and 3D character
+          modeling, I transform ideas into stunning visual experiences. My work
+          is characterized by attention to detail, innovative techniques, and a
+          commitment to exceeding client expectations.
+        </p>
+        <div class="flex items-center justify-center gap-6 flex-wrap">
+          <a
+            href="mailto:Willyfazril14@gmail.com"
+            class="text-red-accent hover:underline text-lg"
+            >Willyfazril14@gmail.com</a
+          >
+
+          <!-- Separator  -->
+
+          <a
+            href="https://instagram.com/Willyfazril_"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-secondary hover:text-primary transition-colors"
+            >@Willyfazril_</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-12 px-8 border-t border-gray-200">
+      <div class="max-w-7xl mx-auto text-center text-gray-500 text-sm">
+        <p>&copy; 2026 Willy Fazril Ramadhan. All rights reserved.</p>
+        <p class="mt-2">Crafted with passion in Bandung, Indonesia.</p>
+      </div>
+    </footer>
+
+    <!-- GSAP CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <!-- Main JS -->
+    <script src="js/main.js"></script>
+  </body>
+</html>

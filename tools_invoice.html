@@ -1,0 +1,737 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice Generator - Willy Fazril</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "light-bg": "#F9FAFB",
+              primary: "#111827",
+              secondary: "#6B7280",
+              "red-accent": "#DC2626",
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- html2pdf.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+      * {
+        font-family: "Montserrat", sans-serif;
+      }
+      body {
+        background: #f9fafb;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen p-8">
+    <div class="max-w-4xl mx-auto">
+      <!-- Header -->
+      <div class="mb-12 text-center">
+        <h1 class="text-4xl font-extrabold text-primary mb-2 tracking-tight">
+          Invoice Generator
+        </h1>
+        <p class="text-secondary">Create professional invoices instantly</p>
+      </div>
+
+      <!-- Form -->
+      <div
+        class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 mb-8"
+      >
+        <form id="invoiceForm">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <label class="block text-sm font-semibold text-primary mb-2"
+                >Invoice Number *</label
+              >
+              <div class="flex gap-2">
+                <input
+                  type="text"
+                  id="invoiceNumber"
+                  required
+                  class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-accent focus:border-transparent transition-all"
+                  placeholder="INV-20260202-123456"
+                  readonly
+                />
+                <button
+                  type="button"
+                  onclick="
+                    document.getElementById('invoiceNumber').value =
+                      generateInvoiceNumber()
+                  "
+                  class="px-4 py-3 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-all border border-gray-300"
+                  title="Generate New Invoice Number"
+                >
+                  🔄
+                </button>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-primary mb-2"
+                >Date *</label
+              >
+              <input
+                type="date"
+                id="invoiceDate"
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-accent focus:border-transparent transition-all"
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <label class="block text-sm font-semibold text-primary mb-2"
+                >Client Name *</label
+              >
+              <input
+                type="text"
+                id="clientName"
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-accent focus:border-transparent transition-all"
+                placeholder="John Doe"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-primary mb-2"
+                >Client Email</label
+              >
+              <input
+                type="email"
+                id="clientEmail"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-accent focus:border-transparent transition-all"
+                placeholder="client@email.com"
+              />
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <label class="block text-sm font-semibold text-primary mb-2"
+              >Project Description *</label
+            >
+            <textarea
+              id="projectDescription"
+              required
+              rows="3"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-accent focus:border-transparent transition-all"
+              placeholder="Video production for corporate event"
+            ></textarea>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <label class="block text-sm font-semibold text-primary mb-2"
+                >Currency *</label
+              >
+              <select
+                id="currency"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-accent focus:border-transparent transition-all"
+              >
+                <option value="IDR">IDR (Rp)</option>
+                <option value="USD">USD ($)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-primary mb-2"
+                >Total Amount *</label
+              >
+              <input
+                type="text"
+                id="totalAmount"
+                required
+                inputmode="numeric"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-accent focus:border-transparent transition-all"
+                placeholder="1.000.000"
+              />
+            </div>
+          </div>
+
+          <div
+            class="flex items-center justify-between pt-6 border-t border-gray-200"
+          >
+            <div class="text-sm text-secondary">
+              <p class="font-semibold text-primary mb-1">
+                Down Payment (30%):
+                <span id="dpAmount" class="text-red-accent">Rp 0</span>
+              </p>
+              <p class="font-semibold text-primary">
+                Remaining:
+                <span id="remainingAmount" class="text-secondary">Rp 0</span>
+              </p>
+            </div>
+            <button
+              type="submit"
+              class="px-8 py-3 bg-red-accent text-white rounded-lg font-semibold hover:bg-red-700 transition-all shadow-sm hover:shadow-md"
+            >
+              Generate PDF
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="text-center text-sm text-secondary">
+        <p>Bank: BNI 1784648917 a.n. Willy Fazril Ramadhan</p>
+        <p class="mt-1">
+          All invoices include 30% DP requirement and 1 revision
+        </p>
+      </div>
+    </div>
+
+    <!-- HIDDEN TEMPLATE FOR PDF -->
+    <template id="invoice-template">
+      <div
+        style="
+          width: 800px;
+          padding: 60px;
+          background: white;
+          font-family: &quot;Montserrat&quot;, sans-serif;
+          color: #111827;
+        "
+      >
+        <!-- Header -->
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 50px;
+            border-bottom: 3px solid #dc2626;
+            padding-bottom: 30px;
+          "
+        >
+          <div>
+            <h1
+              style="
+                font-size: 42px;
+                font-weight: 900;
+                margin: 0;
+                letter-spacing: -0.5px;
+                color: #111827;
+              "
+            >
+              WILLY
+            </h1>
+            <p style="font-size: 14px; color: #6b7280; margin: 5px 0 0 0">
+              Visual Storyteller & Digital Artist
+            </p>
+          </div>
+          <div style="text-align: right">
+            <p
+              style="
+                font-size: 32px;
+                font-weight: 800;
+                margin: 0;
+                color: #dc2626;
+              "
+            >
+              INVOICE
+            </p>
+            <p
+              style="font-size: 14px; color: #6b7280; margin: 5px 0 0 0"
+              id="pdf-invoice-number"
+            >
+              #INV-001
+            </p>
+            <p
+              style="font-size: 14px; color: #6b7280; margin: 5px 0 0 0"
+              id="pdf-invoice-date"
+            >
+              2026-01-15
+            </p>
+          </div>
+        </div>
+
+        <!-- From/To Section -->
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 50px;
+          "
+        >
+          <div style="flex: 1">
+            <p
+              style="
+                font-size: 12px;
+                font-weight: 700;
+                text-transform: uppercase;
+                color: #6b7280;
+                margin: 0 0 10px 0;
+                letter-spacing: 1px;
+              "
+            >
+              From
+            </p>
+            <p
+              style="
+                font-size: 16px;
+                font-weight: 700;
+                margin: 0;
+                color: #111827;
+              "
+            >
+              Willy Fazril Ramadhan
+            </p>
+            <p style="font-size: 14px; color: #6b7280; margin: 5px 0">
+              Jl. Terusan Sekolah No. 29
+            </p>
+            <p style="font-size: 14px; color: #6b7280; margin: 5px 0">
+              Bandung, Indonesia
+            </p>
+            <p style="font-size: 14px; color: #6b7280; margin: 5px 0">
+              Willyfazril14@gmail.com
+            </p>
+          </div>
+          <div style="flex: 1">
+            <p
+              style="
+                font-size: 12px;
+                font-weight: 700;
+                text-transform: uppercase;
+                color: #6b7280;
+                margin: 0 0 10px 0;
+                letter-spacing: 1px;
+              "
+            >
+              Bill To
+            </p>
+            <p
+              style="
+                font-size: 16px;
+                font-weight: 700;
+                margin: 0;
+                color: #111827;
+              "
+              id="pdf-client-name"
+            >
+              Client Name
+            </p>
+            <p
+              style="font-size: 14px; color: #6b7280; margin: 5px 0"
+              id="pdf-client-email"
+            >
+              client@email.com
+            </p>
+          </div>
+        </div>
+
+        <!-- Project Details -->
+        <div
+          style="
+            background: #f9fafb;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+          "
+        >
+          <p
+            style="
+              font-size: 12px;
+              font-weight: 700;
+              text-transform: uppercase;
+              color: #6b7280;
+              margin: 0 0 10px 0;
+              letter-spacing: 1px;
+            "
+          >
+            Project Description
+          </p>
+          <p
+            style="font-size: 15px; color: #111827; margin: 0; line-height: 1.6"
+            id="pdf-project-description"
+          >
+            Video Production Service
+          </p>
+        </div>
+
+        <!-- Amount Breakdown -->
+        <div style="margin-bottom: 40px">
+          <table style="width: 100%; border-collapse: collapse">
+            <thead>
+              <tr style="border-bottom: 2px solid #e5e7eb">
+                <th
+                  style="
+                    text-align: left;
+                    padding: 15px 0;
+                    font-size: 12px;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    color: #6b7280;
+                    letter-spacing: 1px;
+                  "
+                >
+                  Description
+                </th>
+                <th
+                  style="
+                    text-align: right;
+                    padding: 15px 0;
+                    font-size: 12px;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    color: #6b7280;
+                    letter-spacing: 1px;
+                  "
+                >
+                  Amount
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid #f3f4f6">
+                <td style="padding: 20px 0; font-size: 15px; color: #111827">
+                  Total Project Cost
+                </td>
+                <td
+                  style="
+                    text-align: right;
+                    padding: 20px 0;
+                    font-size: 15px;
+                    font-weight: 600;
+                    color: #111827;
+                  "
+                  id="pdf-total-amount"
+                >
+                  Rp 1,000,000
+                </td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f3f4f6">
+                <td style="padding: 20px 0; font-size: 15px; color: #111827">
+                  Down Payment (30%)
+                </td>
+                <td
+                  style="
+                    text-align: right;
+                    padding: 20px 0;
+                    font-size: 15px;
+                    font-weight: 600;
+                    color: #dc2626;
+                  "
+                  id="pdf-dp-amount"
+                >
+                  Rp 300,000
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 20px 0; font-size: 15px; color: #6b7280">
+                  Remaining Balance
+                </td>
+                <td
+                  style="
+                    text-align: right;
+                    padding: 20px 0;
+                    font-size: 15px;
+                    font-weight: 600;
+                    color: #6b7280;
+                  "
+                  id="pdf-remaining-amount"
+                >
+                  Rp 700,000
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Payment & Terms -->
+        <div
+          style="
+            background: #111827;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+          "
+        >
+          <p
+            style="
+              font-size: 12px;
+              font-weight: 700;
+              text-transform: uppercase;
+              color: #9ca3af;
+              margin: 0 0 15px 0;
+              letter-spacing: 1px;
+            "
+          >
+            Payment Details
+          </p>
+          <p
+            style="
+              font-size: 15px;
+              color: white;
+              margin: 5px 0;
+              line-height: 1.8;
+            "
+          >
+            <strong>Bank:</strong> BNI
+          </p>
+          <p
+            style="
+              font-size: 15px;
+              color: white;
+              margin: 5px 0;
+              line-height: 1.8;
+            "
+          >
+            <strong>Account:</strong> 1784648917
+          </p>
+          <p
+            style="
+              font-size: 15px;
+              color: white;
+              margin: 5px 0;
+              line-height: 1.8;
+            "
+          >
+            <strong>Name:</strong> Willy Fazril Ramadhan
+          </p>
+        </div>
+
+        <div
+          style="
+            background: #fef2f2;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 4px solid #dc2626;
+          "
+        >
+          <p
+            style="
+              font-size: 12px;
+              font-weight: 700;
+              text-transform: uppercase;
+              color: #dc2626;
+              margin: 0 0 10px 0;
+              letter-spacing: 1px;
+            "
+          >
+            Terms & Conditions
+          </p>
+          <p
+            style="
+              font-size: 13px;
+              color: #111827;
+              margin: 5px 0;
+              line-height: 1.6;
+            "
+          >
+            • Down payment (30%) required before project commencement
+          </p>
+          <p
+            style="
+              font-size: 13px;
+              color: #111827;
+              margin: 5px 0;
+              line-height: 1.6;
+            "
+          >
+            • Full payment due upon project completion
+          </p>
+          <p
+            style="
+              font-size: 13px;
+              color: #111827;
+              margin: 5px 0;
+              line-height: 1.6;
+            "
+          >
+            • Includes 1 round of revisions
+          </p>
+          <p
+            style="
+              font-size: 13px;
+              color: #111827;
+              margin: 5px 0;
+              line-height: 1.6;
+            "
+          >
+            • Additional revisions charged separately
+          </p>
+        </div>
+
+        <!-- Footer -->
+        <div
+          style="
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid #e5e7eb;
+          "
+        >
+          <p style="font-size: 13px; color: #6b7280; margin: 0">
+            Thank you for your business!
+          </p>
+          <p style="font-size: 12px; color: #9ca3af; margin: 10px 0 0 0">
+            Willyfazril14@gmail.com | Bandung, Indonesia
+          </p>
+        </div>
+      </div>
+    </template>
+
+    <script>
+      // Auto-calculate DP and Remaining
+      const currencySelect = document.getElementById("currency");
+      const totalAmountInput = document.getElementById("totalAmount");
+      const dpAmountSpan = document.getElementById("dpAmount");
+      const remainingAmountSpan = document.getElementById("remainingAmount");
+
+      function formatCurrency(amount, currency) {
+        const formatted = new Intl.NumberFormat("id-ID").format(amount);
+        return currency === "IDR" ? `Rp ${formatted}` : `$${formatted}`;
+      }
+
+      function formatNumberWithDots(value) {
+        // Remove all non-digit characters
+        const numericValue = value.replace(/\D/g, "");
+        // Format with dots as thousand separators
+        return numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      }
+
+      function updateCalculations() {
+        // Get raw numeric value (remove dots)
+        const rawValue = totalAmountInput.value.replace(/\./g, "");
+        const total = parseFloat(rawValue) || 0;
+        const currency = currencySelect.value;
+        const dp = total * 0.3;
+        const remaining = total - dp;
+
+        dpAmountSpan.textContent = formatCurrency(dp, currency);
+        remainingAmountSpan.textContent = formatCurrency(remaining, currency);
+      }
+
+      // Format input as user types
+      totalAmountInput.addEventListener("input", function (e) {
+        const cursorPosition = e.target.selectionStart;
+        const oldLength = e.target.value.length;
+        const oldValue = e.target.value;
+
+        // Format the value
+        const formatted = formatNumberWithDots(e.target.value);
+        e.target.value = formatted;
+
+        // Adjust cursor position after formatting
+        const newLength = formatted.length;
+        const lengthDiff = newLength - oldLength;
+        e.target.setSelectionRange(
+          cursorPosition + lengthDiff,
+          cursorPosition + lengthDiff,
+        );
+
+        updateCalculations();
+      });
+
+      currencySelect.addEventListener("change", updateCalculations);
+
+      // Auto-generate invoice number
+      function generateInvoiceNumber() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, "0");
+        const day = String(now.getDate()).padStart(2, "0");
+        const hours = String(now.getHours()).padStart(2, "0");
+        const minutes = String(now.getMinutes()).padStart(2, "0");
+        const seconds = String(now.getSeconds()).padStart(2, "0");
+
+        // Format: INV-YYYYMMDD-HHMMSS
+        return `INV-${year}${month}${day}-${hours}${minutes}${seconds}`;
+      }
+
+      // Set auto-generated invoice number and today's date
+      document.getElementById("invoiceNumber").value = generateInvoiceNumber();
+      document.getElementById("invoiceDate").valueAsDate = new Date();
+
+      // Handle form submission
+      document
+        .getElementById("invoiceForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          // Get form values
+          const invoiceNumber = document.getElementById("invoiceNumber").value;
+          const invoiceDate = document.getElementById("invoiceDate").value;
+          const clientName = document.getElementById("clientName").value;
+          const clientEmail =
+            document.getElementById("clientEmail").value || "N/A";
+          const projectDescription =
+            document.getElementById("projectDescription").value;
+          const currency = document.getElementById("currency").value;
+          // Remove dots from total amount before parsing
+          const totalAmount = parseFloat(
+            document.getElementById("totalAmount").value.replace(/\./g, ""),
+          );
+          const dpAmount = totalAmount * 0.3;
+          const remainingAmount = totalAmount - dpAmount;
+
+          // Clone template
+          const template = document.getElementById("invoice-template");
+          const clone = template.content.cloneNode(true);
+
+          // Populate data in clone
+          clone.getElementById("pdf-invoice-number").textContent =
+            `#${invoiceNumber}`;
+          clone.getElementById("pdf-invoice-date").textContent = invoiceDate;
+          clone.getElementById("pdf-client-name").textContent = clientName;
+          clone.getElementById("pdf-client-email").textContent = clientEmail;
+          clone.getElementById("pdf-project-description").textContent =
+            projectDescription;
+          clone.getElementById("pdf-total-amount").textContent = formatCurrency(
+            totalAmount,
+            currency,
+          );
+          clone.getElementById("pdf-dp-amount").textContent = formatCurrency(
+            dpAmount,
+            currency,
+          );
+          clone.getElementById("pdf-remaining-amount").textContent =
+            formatCurrency(remainingAmount, currency);
+
+          // Create temporary wrapper
+          const wrapper = document.createElement("div");
+          wrapper.style.position = "fixed";
+          wrapper.style.left = "0";
+          wrapper.style.top = "0";
+          wrapper.style.width = "800px";
+          wrapper.style.zIndex = "-1";
+          wrapper.appendChild(clone);
+          document.body.appendChild(wrapper);
+
+          // Generate PDF
+          const element = wrapper.firstElementChild;
+          const opt = {
+            margin: 0,
+            filename: `Invoice_${invoiceNumber}_${clientName.replace(/\s+/g, "_")}.pdf`,
+            image: { type: "jpeg", quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+            jsPDF: { unit: "px", format: [800, 1100], orientation: "portrait" },
+          };
+
+          html2pdf()
+            .from(element)
+            .set(opt)
+            .save()
+            .then(() => {
+              // Clean up
+              document.body.removeChild(wrapper);
+              alert("Invoice PDF generated successfully!");
+            });
+        });
+    </script>
+  </body>
+</html>
