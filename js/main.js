@@ -25,7 +25,20 @@ window.addEventListener("load", () => {
   const logo = document.getElementById("logo");
 
   // Prevent scrolling during preloader
+  document.documentElement.classList.add("loading");
   document.body.classList.add("loading");
+
+  // Prevent touch scrolling on mobile
+  const preventScroll = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
+  };
+
+  // Add touch and scroll event listeners
+  document.addEventListener("touchmove", preventScroll, { passive: false });
+  document.addEventListener("scroll", preventScroll, { passive: false });
+  document.addEventListener("wheel", preventScroll, { passive: false });
 
   // Counter object for percentage
   const counter = { value: 0 };
@@ -35,7 +48,14 @@ window.addEventListener("load", () => {
     onComplete: () => {
       preloader.style.display = "none";
       // Re-enable scrolling after preloader
+      document.documentElement.classList.remove("loading");
       document.body.classList.remove("loading");
+
+      // Remove scroll prevention listeners
+      document.removeEventListener("touchmove", preventScroll);
+      document.removeEventListener("scroll", preventScroll);
+      document.removeEventListener("wheel", preventScroll);
+
       initScrollAnimations();
 
       // Initialize sequential image loader after preloader
